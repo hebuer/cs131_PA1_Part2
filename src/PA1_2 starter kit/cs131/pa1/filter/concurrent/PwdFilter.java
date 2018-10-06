@@ -12,4 +12,10 @@ public class PwdFilter extends ConcurrentFilter {
 	public String processLine(String line) {
 		return ConcurrentREPL.currentWorkingDirectory;
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 }

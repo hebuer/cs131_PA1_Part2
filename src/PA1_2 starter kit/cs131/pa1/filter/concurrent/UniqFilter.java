@@ -19,4 +19,11 @@ public class UniqFilter extends ConcurrentFilter{
 			return line;
 		}
 	}
+
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 }

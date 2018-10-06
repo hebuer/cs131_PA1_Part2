@@ -15,4 +15,10 @@ public class PrintFilter extends ConcurrentFilter {
 		System.out.println(line);
 		return null;
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 }

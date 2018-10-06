@@ -24,4 +24,10 @@ public class LsFilter extends ConcurrentFilter{
 	public String processLine(String line) {
 		return flist[counter++].getName();
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 }

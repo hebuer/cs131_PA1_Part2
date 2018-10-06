@@ -23,4 +23,10 @@ public class GrepFilter extends ConcurrentFilter {
 			return null;
 		}
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 }

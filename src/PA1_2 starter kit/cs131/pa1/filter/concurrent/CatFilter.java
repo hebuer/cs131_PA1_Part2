@@ -11,7 +11,6 @@ public class CatFilter extends ConcurrentFilter{
 	
 	public CatFilter(String line) throws Exception {
 		super();
-		//hello
 		//parsing the cat options
 		String[] args = line.split(" ");
 		String filename;
@@ -52,5 +51,11 @@ public class CatFilter extends ConcurrentFilter{
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 }
