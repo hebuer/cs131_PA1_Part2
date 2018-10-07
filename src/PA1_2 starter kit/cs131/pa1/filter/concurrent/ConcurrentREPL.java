@@ -22,8 +22,8 @@ public class ConcurrentREPL {
 				//building the filters list from the command
 				ConcurrentFilter filterlist = ConcurrentCommandBuilder.createFiltersFromCommand(command);
 				while(filterlist != null) {
-					Thread a = new Thread(filterlist);
-					a.start();
+					Thread current = new Thread(filterlist);
+					current.start();
 //					filterlist.process();
 					filterlist = (ConcurrentFilter) filterlist.getNext();
 				}
