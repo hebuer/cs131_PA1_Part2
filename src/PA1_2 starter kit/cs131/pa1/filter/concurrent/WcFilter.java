@@ -11,7 +11,12 @@ public class WcFilter extends ConcurrentFilter {
 	
 	public void process() {
 		if(isDone()) {
-			output.add(processLine(null));
+			try {
+				output.put(processLine(null));
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			super.process();
 		}
