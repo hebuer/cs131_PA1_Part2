@@ -16,7 +16,12 @@ public class LsFilter extends ConcurrentFilter{
 	@Override
 	public void process() {
 		while(counter < flist.length) {
-			output.add(processLine(""));
+			try {
+				output.put(processLine(""));
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
