@@ -15,6 +15,7 @@ public class LsFilter extends ConcurrentFilter{
 	
 	@Override
 	public void process() {
+		finish = false;
 		while(counter < flist.length) {
 			try {
 				output.put(processLine(""));
@@ -23,14 +24,18 @@ public class LsFilter extends ConcurrentFilter{
 				e.printStackTrace();
 			}
 		}
-		finish=true;
+		kill();
 	}
 	
 	@Override
 	public String processLine(String line) {
 		return flist[counter++].getName();
 	}
-
+	
+	public String toString() {
+		return "Ls";
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

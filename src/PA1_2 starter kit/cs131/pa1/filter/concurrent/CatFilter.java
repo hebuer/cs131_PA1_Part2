@@ -48,7 +48,7 @@ public class CatFilter extends ConcurrentFilter{
 			}
 		}
 		reader.close();
-		finish=true;
+		kill();
 	}
 
 	public String processLine(String line) {
@@ -58,7 +58,11 @@ public class CatFilter extends ConcurrentFilter{
 			return null;
 		}
 	}
-
+	
+	public String toString() {
+		return "Cat";
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

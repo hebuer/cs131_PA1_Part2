@@ -23,7 +23,11 @@ public class GrepFilter extends ConcurrentFilter {
 			return null;
 		}
 	}
-
+	
+	public String toString() {
+		return "Grep";
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

@@ -10,17 +10,22 @@ public class WcFilter extends ConcurrentFilter {
 	}
 	
 	public void process() {
-		if(isDone()) {
+		finish = false;
+		String line = null;
+		while (line != ConcurrentFilter.terminate) {
+			if (line != null) {
+				processLine(line);
+			}
 			try {
-				output.put(processLine(null));
+				line = input.take();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else {
-			super.process();
 		}
-		finish=true;
+		if (input.isEmpty() && prev.isDone()) {
+			output.add(processLine(null));
+		}
+		kill();
 	}
 	
 	public String processLine(String line) {
@@ -44,7 +49,11 @@ public class WcFilter extends ConcurrentFilter {
 			return null;
 		}
 	}
-
+	
+	public String toString() {
+		return "Wc";
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

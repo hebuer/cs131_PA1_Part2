@@ -8,9 +8,10 @@ import cs131.pa1.filter.Filter;
 
 public abstract class ConcurrentFilter extends Filter implements Runnable{
 	
-	protected Queue<String> input;
+	static final String terminate = "TERMINATE";
+	protected LinkedBlockingQueue<String> input;
 	protected LinkedBlockingQueue<String> output;
-	protected boolean finish;
+	protected boolean finish = false;
 	
 	@Override
 	public void setPrevFilter(Filter prevFilter) {
@@ -33,19 +34,26 @@ public abstract class ConcurrentFilter extends Filter implements Runnable{
 	}
 	
 	public void process(){
-		while (!input.isEmpty()){
-			String line = input.poll();
-			String processedLine = processLine(line);
-			if (processedLine != null){
+		String line = null;
+		while(line!=terminate) {
+			if (line != null) {
+				String processedLine = processLine(line);
+				if (processedLine != null) {
+					try {
+						output.put(processedLine);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				try {
-					output.put(processedLine);
+					line = input.take();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-		}	
-		finish =true;
+		}
+		kill();
 	}
 	
 	public Filter getNext() {
@@ -54,12 +62,21 @@ public abstract class ConcurrentFilter extends Filter implements Runnable{
 	
 	@Override
 	public boolean isDone() {
-		if(input!=null&&prev!=null) return finish&& input.isEmpty()&&prev.isDone();
-		else return finish;
+		return finish;
 	}
 	
 	public void Run(){
 		this.process();
+	}
+	
+	public void kill() {
+		try {
+			output.put(terminate);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finish=true;
 	}
 	
 	protected abstract String processLine(String line);

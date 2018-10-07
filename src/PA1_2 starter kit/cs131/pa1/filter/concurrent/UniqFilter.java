@@ -20,7 +20,10 @@ public class UniqFilter extends ConcurrentFilter{
 		}
 	}
 
-
+	public String toString() {
+		return "Uniq";
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

@@ -34,15 +34,19 @@ public class CdFilter extends ConcurrentFilter {
 	}
 	
 	public void process() {
+		finish=false;
 		processLine("");
-		finish=true;
+		kill();
 	}
 	
 	public String processLine(String line) {
 		ConcurrentREPL.currentWorkingDirectory = dirToSet;
 		return null;
 	}
-
+	
+	public String toString() {
+		return "Cd";
+	}
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

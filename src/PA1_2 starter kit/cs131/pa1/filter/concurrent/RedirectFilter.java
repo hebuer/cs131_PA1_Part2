@@ -31,10 +31,25 @@ public class RedirectFilter extends ConcurrentFilter {
 	}
 	
 	public void process() {
-		while(!isDone()) {
-			processLine(input.poll());
+		finish = false;
+		String line = null;
+		while (line != ConcurrentFilter.terminate) {
+			if (line != null) {
+				processLine(line);
+			}
+			try {
+				line = input.take();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		finish=true;
+		try {
+			fw.flush();
+			fw.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		kill();
 	}
 	
 	public String processLine(String line) {
@@ -49,7 +64,11 @@ public class RedirectFilter extends ConcurrentFilter {
 		}
 		return null;
 	}
-
+	
+	public String toString() {
+		return "Redirect";
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
