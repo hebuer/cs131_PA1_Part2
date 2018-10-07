@@ -8,10 +8,9 @@ import cs131.pa1.filter.Filter;
 
 public abstract class ConcurrentFilter extends Filter implements Runnable{
 	
-	protected LinkedBlockingQueue<String> input;
+	protected Queue<String> input;
 	protected LinkedBlockingQueue<String> output;
-	boolean detectBug = false;
-	protected String terminate = "needToBeTerminate";
+	protected boolean finish;
 	
 	@Override
 	public void setPrevFilter(Filter prevFilter) {
@@ -34,31 +33,20 @@ public abstract class ConcurrentFilter extends Filter implements Runnable{
 	}
 	
 	public void process(){
-		while(input.peek()!=terminate && !detectBug) {
-			String wait;
-			try {
-				if(!(input.peek() instanceof String && input.peek()== terminate)) {
-					wait = input.take();
-					String line = processLine(wait);
-					if(line!=null) output.put(line);
-				}
-			}catch(InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		while (!input.isEmpty()){
+			String line = input.poll();
+			String processedLine = processLine(line);
+			if (processedLine != null){
+				output.add(processedLine);
 			}
-			try {
-				output.put(terminate);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		}	
+		finish =true;
 	}
 	
 	@Override
 	public boolean isDone() {
-		if(input.peek() instanceof String) return input.peek()==terminate;
-		else return false;
+		if(input!=null&&prev!=null) return finish&& input.isEmpty()&&prev.isDone();
+		else return finish;
 	}
 	
 	public void Run(){
