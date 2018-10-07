@@ -10,10 +10,8 @@ public abstract class ConcurrentFilter extends Filter implements Runnable{
 	
 	protected LinkedBlockingQueue<String> input;
 	protected LinkedBlockingQueue<String> output;
-	
-	public void Run(){
-		this.process();
-	}
+	boolean detectBug = false;
+	protected String terminate = "needToBeTerminate";
 	
 	@Override
 	public void setPrevFilter(Filter prevFilter) {
@@ -35,24 +33,36 @@ public abstract class ConcurrentFilter extends Filter implements Runnable{
 		}
 	}
 	
-	public Filter getNext() {
-		return next;
-	}
-	
 	public void process(){
-		while (!input.isEmpty()){
-			String line = input.poll();
-			String processedLine = processLine(line);
-			if (processedLine != null){
-				output.add(processedLine);
+		while(input.peek()!=terminate && !detectBug) {
+			String wait;
+			try {
+				if(!(input.peek() instanceof String && input.peek()== terminate)) {
+					wait = input.take();
+					String line = processLine(wait);
+					if(line!=null) output.put(line);
+				}
+			}catch(InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		}	
+			try {
+				output.put(terminate);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override
 	public boolean isDone() {
-		//re-write
-		return input.size() == 0;
+		if(input.peek() instanceof String) return input.peek()==terminate;
+		else return false;
+	}
+	
+	public void Run(){
+		this.process();
 	}
 	
 	protected abstract String processLine(String line);
