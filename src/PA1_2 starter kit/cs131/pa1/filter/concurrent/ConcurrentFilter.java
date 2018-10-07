@@ -43,6 +43,10 @@ public abstract class ConcurrentFilter extends Filter implements Runnable{
 		finish =true;
 	}
 	
+	public Filter getNext() {
+		return next;
+	}
+	
 	@Override
 	public boolean isDone() {
 		if(input!=null&&prev!=null) return finish&& input.isEmpty()&&prev.isDone();
