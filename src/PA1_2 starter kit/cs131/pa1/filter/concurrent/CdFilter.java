@@ -35,6 +35,7 @@ public class CdFilter extends ConcurrentFilter {
 	
 	public void process() {
 		processLine("");
+		finish=true;
 	}
 	
 	public String processLine(String line) {

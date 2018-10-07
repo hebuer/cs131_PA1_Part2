@@ -34,6 +34,7 @@ public class RedirectFilter extends ConcurrentFilter {
 		while(!isDone()) {
 			processLine(input.poll());
 		}
+		finish=true;
 	}
 	
 	public String processLine(String line) {

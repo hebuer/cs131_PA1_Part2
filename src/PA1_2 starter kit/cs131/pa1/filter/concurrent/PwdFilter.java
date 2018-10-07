@@ -7,6 +7,7 @@ public class PwdFilter extends ConcurrentFilter {
 	
 	public void process() {
 		output.add(processLine(""));
+		finish=true;
 	}
 	
 	public String processLine(String line) {

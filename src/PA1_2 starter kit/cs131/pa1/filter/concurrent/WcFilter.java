@@ -15,6 +15,7 @@ public class WcFilter extends ConcurrentFilter {
 		} else {
 			super.process();
 		}
+		finish=true;
 	}
 	
 	public String processLine(String line) {

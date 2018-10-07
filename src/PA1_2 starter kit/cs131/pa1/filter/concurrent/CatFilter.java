@@ -40,9 +40,15 @@ public class CatFilter extends ConcurrentFilter{
 			if(processedLine == null) {
 				break;
 			}
-			output.add(processedLine);
+			try {
+				output.put(processedLine);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		reader.close();
+		finish=true;
 	}
 
 	public String processLine(String line) {
